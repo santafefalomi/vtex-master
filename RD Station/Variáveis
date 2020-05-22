@@ -1,0 +1,73 @@
+/*
+Variavel: Checkout - Cliente - Cidade
+Tipo: Javascript Personalizado
+*/
+function(){
+  x = {{visitorDemographicInfo}}[1].split(" - ");
+	return x[x.length-2];
+}
+--
+/*
+Variavel: Checkout - Cliente - UF
+Tipo: Javascript Personalizado
+*/
+function(){
+  x = {{visitorDemographicInfo}}[1].split(" - ");
+	return x[x.length-1];
+}
+--
+Variavel: transactionProducts
+Tipo: Camada de Dados
+valor: transactionProducts
+--
+Variavel: transactionShipping
+Tipo: Camada de Dados
+valor: transactionShipping
+--
+/*
+Variavel: transactionSubtotal
+Tipo: Javascript Personalizado
+*/
+function(){
+  return {{transactionTotal}} - {{transactionShipping}} - {{transactionTax}};
+}
+--
+Variavel: transactionTax
+Tipo: Variável da camada de Dados
+valor: transactionTax
+--
+Variavel: orderFormShipping
+Tipo: Variável da camada de Dados
+valor: orderFormShipping
+--
+/*
+Variavel: orderFormSubtotal
+Tipo: Javascript Personalizado
+*/
+function(){
+  return ({{orderFormTotal}} / 100) - {{orderFormShipping}};
+}
+--
+Variável: transactionPaymentType0paymentSystemName
+Tipo: Variável da camada de Dados
+valor: transactionPaymentType.0.paymentSystemName
+--
+Variável: visitorDemographicInfo
+Tipo: Variável da camada de Dados
+valor: visitorDemographicInfo
+--
+Variável: visitorContactInfo0
+Tipo: Variável da camada de Dados
+valor: visitorContactInfo.0
+--
+variável: orderFormProducts
+tipo: variável de camada de dados
+valor: orderFormProducts
+--
+variável: orderFormTotal
+tipo: variável de camada de dados
+valor: orderFormTotal
+--
+variável: transactionTotal
+tipo: variável de camada de dados
+valor: transactionTotal

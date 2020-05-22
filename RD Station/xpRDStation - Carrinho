@@ -1,0 +1,78 @@
+Tag: xpRDStation - Carrinho
+Tipo da Tag: Html Personalizado
+Acionamento: cart / checkout-payment / checkout-email / checkout-shipping
+
+HTML:
+<script>
+function IncluirLead(){
+  	var email = xp_gtm.GetEmailSite();
+  	
+  	if (email == undefined){
+      if($("#client-pre-email").length == 1 && $("#client-pre-email").val().length > 0){
+        email = $("#client-pre-email").val();
+      }
+    }
+  	console.log("IncluirLead:"+email);
+	if(email != undefined){
+      	var UF = {{Checkout - Cliente - UF}};
+  		var cidade = {{Checkout - Cliente - Cidade}};
+      	var produtos = {{orderFormProducts}};
+  		var valorPedido = {{orderFormTotal}} / 100;
+    	var valorFrete = {{orderFormShipping}};
+  		var valorSubtotal = {{orderFormSubtotal}};
+  		var produtosLista = new Array();
+        var departamentosLista = new Array();
+        var subcategoriasLista = new Array();
+        var categoriasLista = new Array();
+        var marcasLista = new Array();
+  
+  		valorPedido = (valorPedido == undefined) ? 0 : valorPedido;
+  		valorFrete = (valorFrete == undefined) ? 0 : valorFrete;
+  		valorSubtotal = (valorSubtotal == undefined) ? 0 : valorSubtotal;
+  
+        for(var i = 0; i < produtos.length; i++){
+            var produto = produtos[i];
+            marcasLista.push(produto.brand);
+            produtosLista.push(produto.name);
+            for (var j = 0; j < produto.categoryTree.length; j++){
+                var nivel = produto.categoryTree[j];
+                switch(j){
+                    case 0:
+                        departamentosLista.push(nivel);
+                        break;
+                    case 1:
+                        categoriasLista.push(nivel);
+                        break;
+                    case 2:
+                        subcategoriasLista.push(nivel);
+                        break;
+                }
+            }
+        }
+  console.log("informações do carrinho: ");
+  console.log(valorPedido);
+  console.log(valorFrete);
+  console.log(valorSubtotal);
+    
+      	var dados = {
+        	"tags": "carrinho",
+        	"identificador": "vtex-checkout",
+	        "Departamentos": departamentosLista.join(","),
+            "Categorias": categoriasLista.join(","),
+            "SubCategorias": subcategoriasLista.join(","),
+            "Marcas": marcasLista.join(","),
+            "Produtos": produtosLista.join(","),
+        	"Valor_Pedido":xp_gtm.FormatMoney(valorPedido.toFixed(2),2),
+      		"Valor_Frete":xp_gtm.FormatMoney(valorFrete.toFixed(2),2),
+      		"Valor_Subtotal":xp_gtm.FormatMoney(valorSubtotal.toFixed(2),2),
+          	"UF":UF,
+          	"Cidade": cidade
+      	}
+        console.log('email na rdstation: ' + email);
+        console.log(dados);
+  		
+      	var ajax = xpRDStation.PostLead(email, dados);
+	}
+}
+IncluirLead();  
+</script>
